@@ -1,0 +1,156 @@
+STEP 1 — EXISTING INPUTS AND OUTPUTS
+Updated 2026-11-08
+
+ONE EXISTING INPUT CAN BE SUFFICIENT
+Pass your existing household data file(s) using --input. No newly created
+household/member/weight extracts are required. The primary filename is left
+unset in the template to avoid suggesting a dataset that never existed.
+
+The code uses each variable directly when it is already present in the primary
+input. Only an absent required column triggers a lookup in another existing
+source. The code never reads a redundant source just because it is configured.
+
+Optional existing sources:
+- An existing master/rural table for an absent weight or other household field.
+- An existing member table for absent head attributes or age-composition counts.
+The JSON maps filenames and columns; it contains no data.
+
+Supplied assets, liabilities and net worth are read rather than constructed.
+Elderly counts use >=60; a strict >60 count cannot simply be relabeled.
+
+TWO OUTPUTS ONLY
+personas.csv: one retained household per row, for later survey steps.
+step1_audit.json: source hashes, settings and aggregate sample/check information.
+There is no separate file listing removed households.
+
+Default local output directories:
+home_appliances/outputs/step1/
+digital_coupon/outputs/step1/
+Existing output folders are never overwritten. All household data remain local.
+
+HOME_APPLIANCES
+Weight in primary input: swgt
+Known fallback source (only if needed): 农村户主样本（4）.csv
+Persona output columns (36):
+  hhid
+  agent_idx
+  province
+  area_type
+  region
+  total_population
+  hh_income
+  gender_code
+  birth_year
+  children_under_14
+  seniors_60_or_over
+  roster_birth_year_missing_count
+  household_size_roster
+  household_size_conflict
+  head_age_survey_year
+  head_age_policy_year
+  total_assets
+  total_liabilities
+  net_worth
+  wealth_missing_value_count
+  swgt
+  last_year_durable_spending
+  c8001_1_mc
+  c8001_2_mc
+  c8001_3_mc
+  c8001_4_mc
+  c8001_5_mc
+  c8001_6_mc
+  c8001_7_mc
+  c8001_8_mc
+  c8001_9_mc
+  c8001_10_mc
+  c8001_11_mc
+  owned_durable_text
+  not_owned_durable_text
+  durable_spending_missing
+
+DIGITAL_COUPON
+Weight in primary input: weight_hh
+Known fallback source (only if needed): chfs2019_master_202112.dta
+Persona output columns (28):
+  hhid
+  agent_idx
+  province
+  area_type
+  region
+  total_population
+  hh_income
+  gender_code
+  birth_year
+  children_under_14
+  seniors_60_or_over
+  roster_birth_year_missing_count
+  household_size_roster
+  household_size_conflict
+  head_age_survey_year
+  head_age_policy_year
+  total_assets
+  total_liabilities
+  net_worth
+  wealth_missing_value_count
+  weight_hh
+  city_level
+  city_label
+  annual_consumption
+  food_spending
+  entertainment_spending
+  tele_spending
+  travel_spending
+
+
+STEP 2 — NO ADDITIONAL DATA INPUT
+
+Each application reads its Step 1 personas.csv only. The required weight is
+already included. An existing run reads its frozen local personas.json and saved
+answers; it does not reload CHFS or look up another weight/member source.
+
+Default prepare outputs: personas.json, questionnaire.json, prompt_preview.txt,
+manifest.json, status.json and empty answers_control/treatment.csv files for
+each selected experiment. These are local run/checkpoint files, not extra inputs
+the user must assemble. No model is called in default prepare mode.
+
+Explicit paid collect additionally saves requests, remote job IDs, raw responses,
+acceptance decisions and accepted complete answer CSVs. Completed-run analysis
+produces weighted/unweighted effects, household contrasts, an audit and plots;
+appliances additionally compares mechanisms when both are complete.
+All Step 2 outputs default to APP/outputs/step2/ and remain ignored by Git.
+See each README for the exact files and experiment selections.
+
+Current Step 2 answer structure:
+Home appliances: four answers per mechanism/arm (6-month spending/financing,
+2-year spending/financing). Digital coupon: one amount per category/horizon/arm;
+7 days, 6 weeks and 20 weeks are independent cumulative questions.
+Coupon answer names are personal_alipay_total_oop_7d,
+personal_alipay_total_oop_6w, and personal_alipay_total_oop_20w respectively.
+The prior days_8_to_42 and days_43_to_140 answers are not collected.
+Input fields, existing weights, and output directory layout are unchanged.
+
+STEP 3
+HOME APPLIANCES
+Input: existing Step 1 personas.csv plus both mechanisms' control/treatment
+answers from Step 2. Use --run-dir, or four explicit existing answer paths.
+No new weight/registry/CHFS file is required. Output: subgroup estimates,
+joint tests, Table 8/9/10D data, household group labels, audit and plots.
+DIGITAL COUPON
+Input: existing Step 1 personas.csv. Prepare freezes the input and questionnaire;
+collect fills single-transaction bill/choice answers; analyze uses that run.
+Optional existing xing_histograms.csv supplies only the published comparison
+panels. Output: full prompts, original/validated answers,
+weighted all-persona histograms, four paired threshold-bin tests, plots/audit.
+Private run/household outputs stay under each application's ignored outputs/.
+
+STEP 4 — NO STEP 2 INPUT OR RESULT COLUMNS
+New-run input: the same existing Step 1 personas.csv, with its sampling weight.
+Appliances additionally USE its existing owned_durable_text,
+not_owned_durable_text and last_year_durable_spending fields. Coupons remove
+consumption information or all household information from their prompts.
+Each run prepares and collects only its selected sensitivity specification.
+Analysis input: that Step 4 run's frozen personas and completed answer files.
+Statistical output: ate_estimates.csv (ATE, standard error, 95% CI, p-value, n)
+and analysis_audit.json under the local run's analysis folder. No Step 2 results,
+cross-specification differences, household contrasts or heterogeneity outputs.
