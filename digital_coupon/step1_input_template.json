@@ -1,0 +1,67 @@
+{
+  "schema_version": 2,
+  "application": "digital_coupon",
+  "input_mapping_confirmed": false,
+  "files": {
+    "households": null,
+    "members": null,
+    "master": "chfs2019_master_202112.dta"
+  },
+  "columns": {
+    "households": {
+      "hhid": "hhid",
+      "province": "prov_CHN",
+      "area_type": "area_type",
+      "household_size": "total_population",
+      "household_income": "hh_income",
+      "gender": "a2003",
+      "birth_year": "a2005",
+      "children_under_14": "children_under_14",
+      "seniors_60_or_over": "seniors_60_or_over",
+      "weight": "weight_hh",
+      "city_level": "city_level",
+      "city_label": "city_lab",
+      "annual_consumption": "total_consump",
+      "food_spending": "g1001_imp",
+      "entertainment_spending": "g1010_imp",
+      "tele_spending": "g1009g_imp",
+      "travel_spending": "g1018_imp"
+    },
+    "members": {
+      "hhid": "hhid",
+      "member_id": "pid",
+      "is_head": "hhead",
+      "gender": "a2003",
+      "birth_year": "a2005"
+    },
+    "master": {
+      "hhid": "hhid",
+      "weight": "weight_hh"
+    }
+  },
+  "weight_fallback_table": "master",
+  "head_value": "1",
+  "household_merges": [],
+  "household_source_constants": {},
+  "area_values": {
+    "city": [
+      "city"
+    ],
+    "rural": [
+      "rural"
+    ]
+  },
+  "missing_values": {},
+  "composition_year": 2019,
+  "elderly_age_at_least": 60,
+  "children_age_strictly_less_than": 14,
+  "missing_core_policy": "exclude",
+  "wealth_inputs": {
+    "table": "households",
+    "total_assets_column": "total_assets",
+    "total_liabilities_column": "total_liabilities",
+    "net_worth_column": "net_worth",
+    "unit_to_rmb": 1,
+    "identity_tolerance_rmb": 0.01
+  }
+}

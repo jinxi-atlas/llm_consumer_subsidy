@@ -1,0 +1,72 @@
+{
+  "schema_version": 2,
+  "application": "home_appliances",
+  "input_mapping_confirmed": false,
+  "files": {
+    "households": null,
+    "members": null,
+    "master": "农村户主样本（4）.csv"
+  },
+  "columns": {
+    "households": {
+      "hhid": "hhid",
+      "province": "prov_CHN",
+      "area_type": "area_type",
+      "household_size": "total_population",
+      "household_income": "hh_income",
+      "gender": "a2003",
+      "birth_year": "a2005",
+      "children_under_14": "children_under_14",
+      "seniors_60_or_over": "seniors_60_or_over",
+      "weight": "swgt",
+      "durable_spending": "g1014_imp",
+      "owns_1": "c8001_1_mc",
+      "owns_2": "c8001_2_mc",
+      "owns_3": "c8001_3_mc",
+      "owns_4": "c8001_4_mc",
+      "owns_5": "c8001_5_mc",
+      "owns_6": "c8001_6_mc",
+      "owns_7": "c8001_7_mc",
+      "owns_8": "c8001_8_mc",
+      "owns_9": "c8001_9_mc",
+      "owns_10": "c8001_10_mc",
+      "owns_11": "c8001_11_mc"
+    },
+    "members": {
+      "hhid": "hhid",
+      "member_id": "pid",
+      "is_head": "hhead",
+      "gender": "a2003",
+      "birth_year": "a2005"
+    },
+    "master": {
+      "hhid": "hhid",
+      "weight": "swgt"
+    }
+  },
+  "weight_fallback_table": "master",
+  "head_value": "1",
+  "household_merges": [],
+  "household_source_constants": {},
+  "area_values": {
+    "city": [
+      "city"
+    ],
+    "rural": [
+      "rural"
+    ]
+  },
+  "missing_values": {},
+  "composition_year": 2011,
+  "elderly_age_at_least": 60,
+  "children_age_strictly_less_than": 14,
+  "missing_core_policy": "error",
+  "wealth_inputs": {
+    "table": "households",
+    "total_assets_column": "total_assets",
+    "total_liabilities_column": "total_liabilities",
+    "net_worth_column": "net_worth",
+    "unit_to_rmb": 1,
+    "identity_tolerance_rmb": 0.01
+  }
+}
